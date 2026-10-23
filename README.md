@@ -31,7 +31,7 @@ The site uses a minimal monochrome visual system with light/dark themes, restrai
 | Animation | Framer Motion, CSS transitions, Canvas API |
 | Blog | Markdown/MDX, frontmatter, build-time post generation |
 | AI assistant | Next.js Route Handler, NVIDIA hosted OpenAI-compatible API |
-| Deployment | Vercel (recommended) |
+| Deployment | Vercel |
 
 ## Getting started
 
