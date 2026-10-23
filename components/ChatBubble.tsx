@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MessageCircle } from 'lucide-react';
 
 type Message = { role: 'user' | 'assistant'; content: string };
 const INITIAL_MESSAGE: Message = {
@@ -107,7 +108,12 @@ export default function ChatBubble() {
         aria-controls="portfolio-chat-panel"
         type="button"
       >
-        {open ? '×' : '✳'}
+        {open ? '×' : <MessageCircle
+                        size={22}
+                        strokeWidth={1.7}
+                        aria-hidden="true"
+                      />
+        }
       </button>
 
       {open && (

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Glass from '@/components/Glass';
 import NameReveal from '@/components/NameReveal';
+import { ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
@@ -77,7 +78,7 @@ export default function Home() {
               <p>{project.desc}</p>
               <div className="tech-line">{project.stack}</div>
               <a href={project.href} target="_blank" rel="noreferrer" className="arrow-link">
-                Explore project <span>↗</span>
+                Explore project <span><ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></span>
               </a>
             </Glass>
           ))}
@@ -186,18 +187,18 @@ export default function Home() {
               rel="noreferrer"
               key={link.label}
             >
-              {link.label} ↗
+              {link.label} <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" />
             </a>
           ))}
           <a className="glass social-button" href="mailto:msaimanishreddy123@gmail.com">
-            Email ↗
+            Email <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" />
           </a>
         </div>
       </section>
 
       <footer className="footer">
         <span>© {new Date().getFullYear()} Sai Manish Reddy M</span>
-        <Link href="/contact">Say hello ↗</Link>
+        <Link href="/contact">Say hello <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></Link>
       </footer>
     </>
   );
