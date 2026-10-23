@@ -198,13 +198,3 @@ I'm a Computer Science undergraduate at **GITAM University, Hyderabad**, interes
 - Bluesky: [msaimanish.bsky.social](https://bsky.app/profile/msaimanish.bsky.social)
 - Email: [msaimanishreddy123@gmail.com](mailto:msaimanishreddy123@gmail.com)
 
-## Roadmap
-
-- [ ] Refine the handwritten SVG name reveal.
-- [ ] Further tune the glass lighting and cursor-reactive highlights.
-- [ ] Improve particle physics and adaptive rendering on low-power devices.
-- [ ] Add a lazy-loaded 3D hero element with a lightweight fallback.
-- [ ] Validate the NVIDIA Nemotron model configuration and chat endpoint.
-- [ ] Complete accessibility, performance, and deployment checks.
-- [ ] Add a resume download link if desired.
-
