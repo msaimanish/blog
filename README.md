@@ -208,6 +208,3 @@ I'm a Computer Science undergraduate at **GITAM University, Hyderabad**, interes
 - [ ] Complete accessibility, performance, and deployment checks.
 - [ ] Add a resume download link if desired.
 
-## License
-
-This is a personal portfolio project. Add a license file if you intend to permit reuse or redistribution of the source.
