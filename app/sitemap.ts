@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-const SITE_URL = 'https://msaimanish.tech';
+const SITE_URL = 'https://www.msaimanish.tech';
 
 function getPublishedPosts() {
   const blogDirectory = path.join(process.cwd(), 'content', 'blog');

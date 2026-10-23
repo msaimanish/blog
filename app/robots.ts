@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://msaimanish.tech/sitemap.xml',
+    sitemap: 'https://www.msaimanish.tech/sitemap.xml',
   };
 }
