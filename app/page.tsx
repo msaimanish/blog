@@ -10,7 +10,7 @@ const projects = [
     type: 'Agentic AI · Incident management',
     desc: 'Proposes conflict-resolution plans for event schedules and resources using an observe-analyze-approve-execute-verify-recover workflow. Human approval, audit logs, verification, and recovery are built into the design.',
     stack: 'Python · LangGraph · MCP · PostgreSQL · pgvector',
-    href: 'https://github.com/msaimanish',
+    href: 'https://github.com/msaimanish/NexCord',
     featured: true,
   },
   {
@@ -18,7 +18,7 @@ const projects = [
     type: 'AI · NLP · Safety intelligence',
     desc: 'Classifies incident, near-miss, and unsafe-condition reports for potential serious-injury and fatality precursors, maps safety rules, prioritizes risk, and retrieves similar historical reports.',
     stack: 'Python · PyTorch · FastAPI · PostgreSQL · pgvector · Next.js · Docker',
-    href: 'https://github.com/msaimanish',
+    href: 'https://github.com/msaimanish/sifsentinel-final',
     featured: false,
   },
   {
@@ -26,7 +26,7 @@ const projects = [
     type: 'Computer vision · Education',
     desc: 'A classroom attendance and analytics system that recognizes registered students, records attendance, and provides searchable records with Gemini-powered natural-language insights.',
     stack: 'Python · MediaPipe · TensorFlow · Flask · Firestore · Gemini',
-    href: 'https://github.com/msaimanish',
+    href: 'https://github.com/msaimanish/ClassSense_AI',
     featured: false,
   },
   {
@@ -66,6 +66,7 @@ const socialLinks = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/msaimanish/' },
   { label: 'X', href: 'https://x.com/msaimanish' },
   { label: 'Bluesky', href: 'https://bsky.app/profile/msaimanish.bsky.social' },
+  { label: 'DevPost', href: 'https://devpost.com/msaimanish' },
 ];
 
 export default function Home() {

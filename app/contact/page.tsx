@@ -6,7 +6,8 @@ const contacts = [
   ['GitHub', 'github.com/msaimanish', 'https://github.com/msaimanish'],
   ['LinkedIn', 'linkedin.com/in/msaimanish', 'https://www.linkedin.com/in/msaimanish/'],
   ['X/Twitter', '@msaimanish', 'https://x.com/msaimanish'],
-  ['Bluesky', '@msaimanish.tech', 'https://bsky.app/profile/msaimanish.tech']
+  ['Bluesky', '@msaimanish.tech', 'https://bsky.app/profile/msaimanish.tech'],
+  ['DevPost', 'msaimanish' , 'https://devpost.com/msaimanish' ]
 ];
 
 export default function Contact() {
