@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Glass from '@/components/Glass';
 import NameReveal from '@/components/NameReveal';
+import FluidText from '@/components/FluidText';
 import { ArrowUpRight } from 'lucide-react';
 
 const projects = [
   {
     name: 'NexCord',
     type: 'Agentic AI · Incident management',
-    desc: 'An observe–analyze–approve–execute–verify–recover workflow for scheduling and resource conflicts, with human approval for consequential actions.',
+    desc: 'Proposes conflict-resolution plans for event schedules and resources using an observe–analyze–approve–execute–verify–recover workflow. Human approval, audit logs, verification, and recovery are built into the design.',
     stack: 'Python · LangGraph · MCP · PostgreSQL · pgvector',
     href: 'https://github.com/msaimanish',
     featured: true,
@@ -15,7 +16,7 @@ const projects = [
   {
     name: 'SIFSentinel',
     type: 'AI · NLP · Safety intelligence',
-    desc: 'Finding serious-injury and fatality precursors in incident reports, connecting semantic retrieval with risk-aware safety analytics.',
+    desc: 'Classifies incident, near-miss, and unsafe-condition reports for potential serious-injury and fatality precursors, maps safety rules, prioritizes risk, and retrieves similar historical reports.',
     stack: 'Python · PyTorch · FastAPI · PostgreSQL · pgvector · Next.js · Docker',
     href: 'https://github.com/msaimanish',
     featured: false,
@@ -23,9 +24,33 @@ const projects = [
   {
     name: 'ClassSense AI',
     type: 'Computer vision · Education',
-    desc: 'A classroom attendance and analytics system combining face embeddings, cloud-backed records, and natural-language insights.',
+    desc: 'A classroom attendance and analytics system that recognizes registered students, records attendance, and provides searchable records with Gemini-powered natural-language insights.',
     stack: 'Python · MediaPipe · TensorFlow · Flask · Firestore · Gemini',
     href: 'https://github.com/msaimanish',
+    featured: false,
+  },
+  {
+    name: 'SmartSpendAI',
+    type: 'Machine learning · Personal finance',
+    desc: 'A personal-finance dashboard for logging expenses, exploring category and time-based spending trends, predicting next month’s spend with linear regression, and flagging unusual expenses.',
+    stack: 'Python · Flask · Firestore · scikit-learn · Chart.js',
+    href: 'https://github.com/msaimanish/smartspendai',
+    featured: false,
+  },
+  {
+    name: 'Face Recognition Attendance',
+    type: 'Computer vision · Web application',
+    desc: 'A face-recognition attendance app for registering people, verifying identities in real time, logging attendance, and reviewing records through a dashboard with filters and a calendar view.',
+    stack: 'Python · Flask · OpenCV · PyTorch · SQLite · Pandas',
+    href: 'https://github.com/msaimanish/face_recognition_web_app',
+    featured: false,
+  },
+  {
+    name: 'HAVANA 2025 Website',
+    type: 'Web development · Event website',
+    desc: 'Built in February 2025, this multi-page event website brings together event details, team and about pages, accommodation and contact information, and downloadable rulebooks with custom visual effects.',
+    stack: 'HTML · CSS · JavaScript · 3D and animation effects',
+    href: 'https://github.com/msaimanish/HAVANA-Website',
     featured: false,
   },
 ];
@@ -52,7 +77,7 @@ export default function Home() {
           AI/ML Engineer <span>·</span> Agentic AI <span>·</span> MLOps
         </p>
         <p className="hero-line">
-          I build things, break things, learn new things, and occasionally make something cool.
+          <FluidText>{'I build things, break things, learn new things, and occasionally make something cool.'}</FluidText>
         </p>
         <div className="scroll-cue">SCROLL TO EXPLORE <span>↓</span></div>
       </section>
@@ -70,7 +95,7 @@ export default function Home() {
               key={project.name}
             >
               <div className="project-top">
-                <span>0{index + 1}</span>
+                <span>{String(index + 1).padStart(2, '0')}</span>
                 <span className="project-type">{project.type}</span>
               </div>
               {project.featured && <div className="featured-label">FEATURED PROJECT</div>}
@@ -103,8 +128,25 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section experience-section" id="experience">
+        <div className="section-kicker">03 / EXPERIENCE</div>
+        <div className="section-heading">
+          <h2>Leading by <em>building.</em></h2>
+          <p>GITAM University · Hyderabad, India</p>
+        </div>
+        <div className="timeline experience-timeline">
+          <article>
+            <span className="timeline-date">AUG 2025 — AUG 2026</span>
+            <div>
+              <h3>Web Development Lead · G-ELECTRA Tech Club</h3>
+              <p>Led the development of two websites for technology-fest promotion, event information, and participant engagement. Collaborated on interactive 3D features and responsive web experiences, optimizing rendering performance and cross-device compatibility.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section className="section toolkit-section" id="toolkit">
-        <div className="section-kicker">03 / TOOLKIT</div>
+        <div className="section-kicker">04 / TOOLKIT</div>
         <div className="section-heading">
           <h2>Tools I reach for.</h2>
           <p>Always learning. Never collecting tools just to collect them.</p>
@@ -124,7 +166,7 @@ export default function Home() {
       </section>
 
       <section className="section timeline-section" id="milestones">
-        <div className="section-kicker">04 / MILESTONES</div>
+        <div className="section-kicker">05 / MILESTONES</div>
         <div className="timeline">
           <article>
             <span className="timeline-date">SEP 2026</span>
@@ -137,28 +179,28 @@ export default function Home() {
             <span className="timeline-date">DEC 2022</span>
             <div>
               <h3>EduHacks — First Overall</h3>
-              <p>Built Slidesmart, an AI-powered tool for turning long videos and documents into presentation slides. <span className="muted">· Major League Hacking</span></p>
+              <p>Built Slidesmart, an AI-powered tool for turning long videos and documents into presentation slides. <span className="muted">· Major League Hacking (MLH)</span></p>
             </div>
           </article>
           <article>
             <span className="timeline-date">NOV 2022</span>
             <div>
-              <h3>NewHacks — Sponsor Prize Winner</h3>
-              <p>Built tPay, a face-recognition payment authentication prototype. <span className="muted">· University of Toronto</span></p>
+              <h3>NewHacks — Synopsys Sponsor Prize Winner</h3>
+              <p>Built tPay, a face-recognition payment authentication prototype. <span className="muted">· Major League Hacking (MLH) × University of Toronto</span></p>
             </div>
           </article>
           <article>
             <span className="timeline-date">NOV 2022</span>
             <div>
               <h3>Harvest Hacks — 2nd Place Overall</h3>
-              <p>Contributed to Weed Detech, a computer-vision application for weed detection and localization.</p>
+              <p>Contributed to Weed Detech, a computer-vision application for weed detection and localization. <span className="muted">· Major League Hacking (MLH)</span></p>
             </div>
           </article>
         </div>
       </section>
 
       <section className="section education" id="education">
-        <div className="section-kicker">05 / CURRENTLY</div>
+        <div className="section-kicker">06 / CURRENTLY</div>
         <Glass className="education-card">
           <div>
             <span className="muted">2024 — EXPECTED APR 2028</span>
@@ -173,7 +215,7 @@ export default function Home() {
       </section>
 
       <section className="section social-links-section" id="elsewhere">
-        <div className="section-kicker">06 / ELSEWHERE</div>
+        <div className="section-kicker">07 / ELSEWHERE</div>
         <div className="section-heading">
           <h2>Find me <em>online.</em></h2>
           <p>Projects, notes, and occasional updates.</p>

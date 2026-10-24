@@ -1790,3 +1790,103 @@ html[data-theme='dark'] .project-card > p { color: #c4c4c4; }
 @media (prefers-reduced-motion: reduce) {
   .hero .name-script .name-caret { animation: none; opacity: 1; }
 }
+
+/* Per-letter hover zoom for the homepage tagline. Paste this at the END of app/globals.css. */
+.hero .fluid-text {
+  display: inline;
+  white-space: normal;
+}
+
+.hero .fluid-text > .fluid-letter {
+  display: inline-block !important;
+  transform: scale(1) !important;
+  transform-origin: 50% 75%;
+  transition: transform 170ms cubic-bezier(.2, .8, .2, 1) !important;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hero .fluid-text > .fluid-letter:hover {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.32) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .fluid-text > .fluid-letter,
+  .hero .fluid-text > .fluid-letter:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Keep the Resume action readable in both monochrome themes. */
+.nav-resume {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+  color: #111111;
+  border: 1px solid rgba(0, 0, 0, .12);
+  background: rgba(0, 0, 0, .035);
+}
+
+.nav-resume:hover {
+  color: #111111;
+  background: rgba(0, 0, 0, .07);
+}
+
+html[data-theme='dark'] .nav-resume {
+  color: #f2f2f2;
+  border-color: rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .065);
+}
+
+html[data-theme='dark'] .nav-resume:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, .13);
+}
+
+/*
+ * Preserve the original fluid-letter animation, with a stronger zoom and
+ * a tighter stagger so more letters move together.
+ * Replace the previous custom .hero .fluid-text hover block with this.
+ */
+.hero .fluid-text {
+  display: inline;
+  white-space: normal;
+}
+
+.hero .fluid-text > .fluid-letter {
+  display: inline-block;
+  transform-origin: 50% 75%;
+  transition: transform 240ms cubic-bezier(.2, .8, .2, 1), font-weight 200ms;
+  text-shadow: 0 0 0 transparent;
+}
+
+.hero .fluid-text:hover > .fluid-letter,
+.hero .fluid-text:focus-within > .fluid-letter {
+  animation: fluid-zoom 1.15s ease-in-out both;
+  animation-delay: calc(var(--i, 0) * 8ms);
+}
+
+@keyframes fluid-zoom {
+  0%, 100% {
+    transform: translateY(0) scale(1) skewX(0);
+    font-weight: 500;
+    text-shadow: 0 0 0 transparent;
+  }
+  40% {
+    transform: translateY(-5px) scale(1.18) skewX(-5deg);
+    font-weight: 700;
+    text-shadow: 0 0 24px #a8bdff66;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .fluid-text:hover > .fluid-letter,
+  .hero .fluid-text:focus-within > .fluid-letter {
+    animation: none;
+  }
+}

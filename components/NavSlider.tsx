@@ -81,6 +81,17 @@ export default function NavSlider() {
             </Link>
           </motion.div>
         ))}
+        <motion.div layout key="/resume" className="nav-item nav-item--resume" transition={spring}>
+          <a
+            href="/cv_manish.pdf"
+            download
+            className="nav-link nav-resume"
+            aria-label="Download resume (PDF)"
+            title="Download resume (PDF)"
+          >
+            Resume
+          </a>
+        </motion.div>
       </motion.nav>
     </motion.header>
   );
