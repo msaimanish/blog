@@ -1890,3 +1890,151 @@ html[data-theme='dark'] .nav-resume:hover {
     animation: none;
   }
 }
+/* Targeted chat motion refinement — append at the end of app/globals.css. */
+.chat-launch {
+  transform-origin: center;
+  transition: background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  will-change: transform;
+}
+
+/* Let Framer Motion own the panel's enter/exit transform and opacity. */
+.chat-panel {
+  animation: none !important;
+  transform-origin: bottom right;
+  will-change: transform, opacity;
+}
+
+.chat-launch-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-launch {
+    transition: none;
+  }
+}
+
+/* Markdown formatting inside assistant chat replies only. */
+.chat-message.assistant {
+  white-space: normal;
+}
+
+.chat-markdown {
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.chat-markdown > :first-child {
+  margin-top: 0;
+}
+
+.chat-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.chat-markdown p {
+  margin: 0 0 0.7em;
+}
+
+.chat-markdown h1,
+.chat-markdown h2,
+.chat-markdown h3,
+.chat-markdown h4 {
+  margin: 0.9em 0 0.45em;
+  font-size: 1em;
+  line-height: 1.4;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.chat-markdown ul,
+.chat-markdown ol {
+  margin: 0.4em 0 0.8em;
+  padding-left: 1.4em;
+}
+
+.chat-markdown li + li {
+  margin-top: 0.25em;
+}
+
+.chat-markdown ul {
+  list-style: disc;
+}
+
+.chat-markdown ol {
+  list-style: decimal;
+}
+
+.chat-markdown strong {
+  font-weight: 700;
+}
+
+.chat-markdown a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+}
+
+.chat-markdown code {
+  font-family: 'DM Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 0.9em;
+  padding: 0.12em 0.35em;
+  border-radius: 4px;
+  background: rgba(127, 127, 127, 0.12);
+}
+
+.chat-markdown pre {
+  max-width: 100%;
+  margin: 0.6em 0 0.8em;
+  padding: 0.7em;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(127, 127, 127, 0.08);
+  white-space: pre;
+}
+
+.chat-markdown pre code {
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.chat-markdown blockquote {
+  margin: 0.6em 0;
+  padding-left: 0.8em;
+  border-left: 2px solid var(--line);
+  opacity: 0.9;
+}
+
+.chat-markdown hr {
+  margin: 0.8em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.chat-markdown table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.chat-markdown th,
+.chat-markdown td {
+  padding: 0.35em 0.5em;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+html[data-theme='dark'] .chat-markdown code {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme='dark'] .chat-markdown pre {
+  background: rgba(255, 255, 255, 0.05);
+}

@@ -1,13 +1,17 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { MessageCircle } from 'lucide-react';
 
 type Message = { role: 'user' | 'assistant'; content: string };
+
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
-  content: 'Hey, I’m Manish’s portfolio assistant. Ask me about his projects, experience, skills, or hackathon wins.',
+  content:
+    'Hey, I’m Manish’s portfolio assistant. Ask me about his projects, experience, skills, or hackathon wins.',
 };
+
 const SUGGESTIONS = [
   'What has Manish built?',
   'Which hackathons has he won?',
@@ -65,15 +69,21 @@ export default function ChatBubble() {
         signal: controller.signal,
       });
       const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        const message = typeof data.message === 'string' ? data.message : 'Chat is temporarily unavailable. Please try again or email Manish.';
+        const message = typeof data.message === 'string'
+          ? data.message
+          : 'Chat is temporarily unavailable. Please try again or email Manish.';
         setMessages([...conversation, { role: 'assistant', content: message }]);
         if (response.status !== 503) setError('The assistant could not complete that request.');
         return;
       }
+
       setMessages([...conversation, {
         role: 'assistant',
-        content: typeof data.message === 'string' ? data.message : 'I don’t have an answer for that yet.',
+        content: typeof data.message === 'string'
+          ? data.message
+          : 'I don’t have an answer for that yet.',
       }]);
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
@@ -108,12 +118,11 @@ export default function ChatBubble() {
         aria-controls="portfolio-chat-panel"
         type="button"
       >
-        {open ? '×' : <MessageCircle
-                        size={22}
-                        strokeWidth={1.7}
-                        aria-hidden="true"
-                      />
-        }
+        {open ? (
+          '×'
+        ) : (
+          <MessageCircle size={22} strokeWidth={1.7} aria-hidden="true" />
+        )}
       </button>
 
       {open && (
@@ -131,10 +140,75 @@ export default function ChatBubble() {
           <div className="chat-messages" aria-live="polite" aria-relevant="additions text" role="log">
             {messages.map((message, index) => (
               <div key={`${index}-${message.role}`} className={`chat-message ${message.role}`}>
-                {message.content}
+                {message.role === 'assistant' ? (
+                  <div className="chat-markdown">
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => (
+                          <p style={{ margin: '0.25rem 0 0.65rem', lineHeight: 1.65 }}>{children}</p>
+                        ),
+                        h1: ({ children }) => (
+                          <h1 style={{ fontSize: '1.2rem', lineHeight: 1.3, fontWeight: 700, margin: '0.5rem 0 0.6rem' }}>{children}</h1>
+                        ),
+                        h2: ({ children }) => (
+                          <h2 style={{ fontSize: '1.1rem', lineHeight: 1.35, fontWeight: 700, margin: '0.65rem 0 0.4rem' }}>{children}</h2>
+                        ),
+                        h3: ({ children }) => (
+                          <h3 style={{ fontSize: '1rem', lineHeight: 1.4, fontWeight: 650, margin: '0.6rem 0 0.35rem' }}>{children}</h3>
+                        ),
+                        ul: ({ children }) => (
+                          <ul style={{ margin: '0.25rem 0 0.7rem', paddingLeft: '1.35rem', display: 'grid', gap: '0.25rem', listStyle: 'disc' }}>{children}</ul>
+                        ),
+                        ol: ({ children }) => (
+                          <ol style={{ margin: '0.25rem 0 0.7rem', paddingLeft: '1.35rem', display: 'grid', gap: '0.25rem', listStyle: 'decimal' }}>{children}</ol>
+                        ),
+                        li: ({ children }) => (
+                          <li style={{ paddingLeft: '0.1rem', lineHeight: 1.6 }}>{children}</li>
+                        ),
+                        a: ({ href, children }) => (
+                          <a href={href} target="_blank" rel="noreferrer" style={{ color: 'var(--fg)', textDecoration: 'underline', textUnderlineOffset: 3, overflowWrap: 'anywhere' }}>{children}</a>
+                        ),
+                        strong: ({ children }) => (
+                          <strong style={{ fontWeight: 750 }}>{children}</strong>
+                        ),
+                        blockquote: ({ children }) => (
+                          <blockquote style={{ margin: '0.5rem 0', paddingLeft: '0.75rem', borderLeft: '2px solid var(--line)', opacity: 0.9 }}>{children}</blockquote>
+                        ),
+                        code: ({ children, className }) => (
+                          <code
+                            className={className}
+                            style={{
+                              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                              fontSize: '0.9em',
+                              background: className ? 'transparent' : 'rgba(127,127,127,0.14)',
+                              border: className ? 0 : '1px solid rgba(127,127,127,0.14)',
+                              borderRadius: 4,
+                              padding: className ? 0 : '0.08rem 0.28rem',
+                              overflowWrap: 'anywhere',
+                            }}
+                          >{children}</code>
+                        ),
+                        pre: ({ children }) => (
+                          <pre style={{ margin: '0.4rem 0 0.75rem', padding: '0.7rem', maxWidth: '100%', overflowX: 'auto', borderRadius: 8, border: '1px solid var(--line)', background: 'rgba(127,127,127,0.1)', lineHeight: 1.5 }}>
+                            {children}
+                          </pre>
+                        ),
+                        hr: () => <hr style={{ margin: '0.65rem 0', border: 0, borderTop: '1px solid var(--line)' }} />,
+                      }}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  message.content
+                )}
               </div>
             ))}
-            {busy && <div className="chat-message assistant chat-thinking"><span /> <span /> <span /><span className="sr-only">Thinking…</span></div>}
+            {busy && (
+              <div className="chat-message assistant chat-thinking">
+                <span /> <span /> <span /><span className="sr-only">Thinking…</span>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
