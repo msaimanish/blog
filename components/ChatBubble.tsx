@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { MessageCircle } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 type Message = { role: 'user' | 'assistant'; content: string };
 
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
   content:
-    'Hey, I’m Manish’s portfolio assistant. Ask me about his projects, experience, skills, or hackathon wins.',
+    'Hey, I\'m Manish\'s portfolio assistant. Ask me about his projects, experience, skills, or hackathon wins.',
 };
 
 const SUGGESTIONS = [
@@ -89,7 +90,7 @@ export default function ChatBubble() {
       if (err instanceof DOMException && err.name === 'AbortError') return;
       setMessages([...conversation, {
         role: 'assistant',
-        content: 'I can’t reach the assistant right now. Please try again, or email Manish at msaimanishreddy123@gmail.com.',
+        content: 'I can\'t reach the assistant right now. Please try again, or email Manish at msaimanishreddy123@gmail.com.',
       }]);
       setError('Connection problem. Check your connection and try again.');
     } finally {
@@ -236,10 +237,10 @@ export default function ChatBubble() {
             {busy ? (
               <button type="button" className="chat-stop" onClick={() => abortRef.current?.abort()}>Stop</button>
             ) : (
-              <button type="submit" disabled={!input.trim()}>Send <span aria-hidden="true">↗</span></button>
+              <button type="submit" disabled={!input.trim()}>Send <span aria-hidden="true"><ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></span></button>
             )}
           </form>
-          <p className="chat-disclaimer">Answers are based on Manish’s portfolio. <a href="mailto:msaimanishreddy123@gmail.com">Contact him directly</a>.</p>
+          <p className="chat-disclaimer">Answers are based on Manish's portfolio. <a href="mailto:msaimanishreddy123@gmail.com">Contact him directly</a>.</p>
         </section>
       )}
     </>

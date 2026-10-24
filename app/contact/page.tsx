@@ -1,4 +1,57 @@
 import Glass from '@/components/Glass';
 import { ArrowUpRight } from 'lucide-react';
-const contacts=[['Email','msaimanishreddy123@gmail.com','mailto:msaimanishreddy123@gmail.com'],['GitHub','github.com/msaimanish','https://github.com/msaimanish'],['LinkedIn','linkedin.com/in/msaimanish','https://www.linkedin.com/in/msaimanish/'],['X/Twitter','@msaimanish','https://x.com/msaimanish'],['Bluesky','@msaimanish.tech','https://bsky.app/profile/msaimanish.tech']];
-export default function Contact(){return <div className="inner-page"><div className="section-kicker">A GOOD CONVERSATION STARTS SOMEWHERE</div><h1 className="page-title">Have something<br/><em>in mind?</em></h1><p className="page-intro">I’m always happy to talk about machine learning, agentic systems, open-source projects, or an idea you can’t stop thinking about.</p><a className="glass email-cta" href="mailto:msaimanishreddy123@gmail.com">Send me an email <span><ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></span></a><div className="contact-list">{contacts.map(([label,value,href])=><a href={href} key={label} target={label==='Email'?undefined:'_blank'} rel={label==='Email'?undefined:'noreferrer'} className="contact-item"><span>{label}</span><strong>{value}</strong><span><ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></span></a>)}</div><Glass className="contact-note"><span className="status-dot"/> Hyderabad, India <span className="dot-separator">·</span> Usually building something</Glass></div>}
+
+const contacts = [
+  ['Email', 'msaimanishreddy123@gmail.com', 'mailto:msaimanishreddy123@gmail.com'],
+  ['GitHub', 'github.com/msaimanish', 'https://github.com/msaimanish'],
+  ['LinkedIn', 'linkedin.com/in/msaimanish', 'https://www.linkedin.com/in/msaimanish/'],
+  ['X/Twitter', '@msaimanish', 'https://x.com/msaimanish'],
+  ['Bluesky', '@msaimanish.tech', 'https://bsky.app/profile/msaimanish.tech']
+];
+
+export default function Contact() {
+  return (
+    <div className="inner-page">
+      <div className="section-kicker">A GOOD CONVERSATION STARTS SOMEWHERE</div>
+      
+      <h1 className="page-title">
+        Have something<br />
+        <em>in mind?</em>
+      </h1>
+      
+      <p className="page-intro">
+        I'm always happy to talk about machine learning, agentic systems, open-source projects, or an idea you can't stop thinking about.
+      </p>
+      
+      <a className="glass email-cta" href="mailto:msaimanishreddy123@gmail.com">
+        Send me an email{' '}
+        <span>
+          <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" />
+        </span>
+      </a>
+      
+      <div className="contact-list">
+        {contacts.map(([label, value, href]) => (
+          <a 
+            href={href} 
+            key={label} 
+            target={label === 'Email' ? undefined : '_blank'} 
+            rel={label === 'Email' ? undefined : 'noreferrer'} 
+            className="contact-item"
+          >
+            <span>{label}</span>
+            <strong>{value}</strong>
+            <span>
+              <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" />
+            </span>
+          </a>
+        ))}
+      </div>
+      
+      <Glass className="contact-note">
+        <span className="status-dot" /> Hyderabad, India{' '}
+        <span className="dot-separator">·</span> Usually building something
+      </Glass>
+    </div>
+  );
+}

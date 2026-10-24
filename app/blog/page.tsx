@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Glass from '@/components/Glass';
 import { getPosts } from '@/lib/blog';
+import { ArrowUpRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -32,7 +33,7 @@ export default function Blog() {
               <p>{post.summary}</p>
               <div className="post-bottom">
                 <div className="chips">{post.tags.map((tag) => <span className="skill-chip" key={tag}>{tag}</span>)}</div>
-                <span className="post-arrow" aria-hidden="true">↗</span>
+                <span className="post-arrow" aria-hidden="true"><ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" /></span>
               </div>
             </Glass>
           </Link>

@@ -8,7 +8,7 @@ const projects = [
   {
     name: 'NexCord',
     type: 'Agentic AI · Incident management',
-    desc: 'Proposes conflict-resolution plans for event schedules and resources using an observe–analyze–approve–execute–verify–recover workflow. Human approval, audit logs, verification, and recovery are built into the design.',
+    desc: 'Proposes conflict-resolution plans for event schedules and resources using an observe-analyze-approve-execute-verify-recover workflow. Human approval, audit logs, verification, and recovery are built into the design.',
     stack: 'Python · LangGraph · MCP · PostgreSQL · pgvector',
     href: 'https://github.com/msaimanish',
     featured: true,
@@ -32,7 +32,7 @@ const projects = [
   {
     name: 'SmartSpendAI',
     type: 'Machine learning · Personal finance',
-    desc: 'A personal-finance dashboard for logging expenses, exploring category and time-based spending trends, predicting next month’s spend with linear regression, and flagging unusual expenses.',
+    desc: 'A personal-finance dashboard for logging expenses, exploring category and time-based spending trends, predicting next month\'s spend with linear regression, and flagging unusual expenses.',
     stack: 'Python · Flask · Firestore · scikit-learn · Chart.js',
     href: 'https://github.com/msaimanish/smartspendai',
     featured: false,
@@ -85,7 +85,7 @@ export default function Home() {
       <section className="section work-section" id="projects">
         <div className="section-kicker">01 / SELECTED WORK</div>
         <div className="section-heading">
-          <h2>Things I’ve been <em>building.</em></h2>
+          <h2>Things I've been <em>building.</em></h2>
           <p>Ideas become interesting when they leave the notebook.</p>
         </div>
         <div className="project-grid">
@@ -117,13 +117,13 @@ export default function Home() {
         </div>
         <div className="profile-copy">
           <p>
-            I’m a Computer Science undergraduate at GITAM University, Hyderabad, interested in building intelligent systems that bring machine learning, software engineering, and infrastructure together.
+            I'm a Computer Science undergraduate at GITAM University, Hyderabad, interested in building intelligent systems that bring machine learning, software engineering, and infrastructure together.
           </p>
           <p>
             I like understanding how things work—from model behavior and semantic search to the systems that keep an application reliable in production. My work spans AI-powered safety intelligence, agentic workflows, NLP, and computer vision. I enjoy building end-to-end: models, APIs, dashboards, and deployment.
           </p>
           <p>
-            Before GITAM, I studied Mathematical &amp; Physical Sciences at the University of Toronto, where I made the Dean’s List in 2023.
+            Before GITAM, I studied Mathematical &amp; Physical Sciences at the University of Toronto, where I made the Dean's List in 2023.
           </p>
         </div>
       </section>
