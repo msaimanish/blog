@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
+
 type Particle = {
   x: number;
   y: number;
@@ -105,30 +106,62 @@ export default function EffectsCanvas() {
     };
 
     const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      const previousWidth = width;
+      const previousHeight = height;
+      const nextWidth = window.innerWidth;
+      const nextHeight = window.innerHeight;
+
+      width = nextWidth;
+      height = nextHeight;
       sizeCanvas(particlesCanvas, particlesContext);
       sizeCanvas(cursorCanvas, cursorContext);
 
-      const areaCount = Math.floor((width * height) / 1550);
-      const count = Math.max(160, Math.min(coarsePointer ? 250 : 520, areaCount));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        phase: Math.random() * Math.PI * 2,
-        speed: 23 + Math.random() * 25,
-        radius: 2.2 + Math.random() * 1.5,
-        offsetX: 0,
-        offsetY: 0,
-        pushVX: 0,
-        pushVY: 0,
-      }));
+      if (particles.length === 0) {
+        const areaCount = Math.floor((width * height) / 1550);
+        const count = Math.max(160, Math.min(coarsePointer ? 250 : 520, areaCount));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          phase: Math.random() * Math.PI * 2,
+          speed: 23 + Math.random() * 25,
+          radius: 2.2 + Math.random() * 1.5,
+          offsetX: 0,
+          offsetY: 0,
+          pushVX: 0,
+          pushVY: 0,
+        }));
+      } else if (previousWidth > 0 && previousHeight > 0) {
+        // Keep particle positions instead of randomising the whole field on resize.
+        // Mobile browsers can emit resize events when their address bar expands/collapses.
+        const widthChanged = Math.abs(width - previousWidth) > 2;
+        const heightChanged = Math.abs(height - previousHeight) > 2;
+        const likelyMobileBrowserChromeResize = coarsePointer && !widthChanged;
 
+        if (widthChanged || (heightChanged && !likelyMobileBrowserChromeResize)) {
+          const scaleX = width / previousWidth;
+          const scaleY = height / previousHeight;
+          for (const particle of particles) {
+            if (widthChanged) {
+              particle.x *= scaleX;
+              particle.offsetX *= scaleX;
+              particle.pushVX *= scaleX;
+            }
+            if (heightChanged && !likelyMobileBrowserChromeResize) {
+              particle.y *= scaleY;
+              particle.offsetY *= scaleY;
+              particle.pushVY *= scaleY;
+            }
+          }
+        }
+      }
+
+      if (coarsePointer) trail = [];
       if (reducedMotion) drawStaticParticles();
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType === 'touch' || reducedMotion) return;
+      // Touchscreens get a calm, continuously moving background only.
+      if (coarsePointer || event.pointerType === 'touch' || reducedMotion) return;
       pointer.previousX = pointer.x;
       pointer.previousY = pointer.y;
       pointer.x = event.clientX;
@@ -161,15 +194,18 @@ export default function EffectsCanvas() {
         if (particle.y < -padding) particle.y = height + padding;
         else if (particle.y > height + padding) particle.y = -padding;
 
-        const drawX = particle.x + particle.offsetX;
-        const drawY = particle.y + particle.offsetY;
-        const dx = drawX - pointer.x;
-        const dy = drawY - pointer.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance > 0.001 && distance < POINTER_RADIUS) {
-          const strength = (1 - distance / POINTER_RADIUS) * 520 * dt;
-          particle.pushVX += (dx / distance) * strength;
-          particle.pushVY += (dy / distance) * strength;
+        // Repulsion is a desktop-only effect; on mobile particles only follow the flow field.
+        if (!coarsePointer) {
+          const drawX = particle.x + particle.offsetX;
+          const drawY = particle.y + particle.offsetY;
+          const dx = drawX - pointer.x;
+          const dy = drawY - pointer.y;
+          const distance = Math.hypot(dx, dy);
+          if (distance > 0.001 && distance < POINTER_RADIUS) {
+            const strength = (1 - distance / POINTER_RADIUS) * 520 * dt;
+            particle.pushVX += (dx / distance) * strength;
+            particle.pushVY += (dy / distance) * strength;
+          }
         }
 
         particle.pushVX += -particle.offsetX * 16 * dt;
@@ -241,7 +277,11 @@ export default function EffectsCanvas() {
       particlesContext.clearRect(0, 0, width, height);
       const protectedRects = getProtectedRects();
       updateParticles(deltaSeconds, protectedRects);
-      drawSlicingTrail(now);
+      if (coarsePointer) {
+        cursorContext.clearRect(0, 0, width, height);
+      } else {
+        drawSlicingTrail(now);
+      }
     };
 
     const themeObserver = new MutationObserver(() => {
@@ -255,14 +295,18 @@ export default function EffectsCanvas() {
 
     resize();
     window.addEventListener('resize', resize);
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    if (!coarsePointer) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+    }
     if (!reducedMotion) frame = window.requestAnimationFrame(draw);
 
     return () => {
       window.cancelAnimationFrame(frame);
       themeObserver.disconnect();
       window.removeEventListener('resize', resize);
-      window.removeEventListener('pointermove', onPointerMove);
+      if (!coarsePointer) {
+        window.removeEventListener('pointermove', onPointerMove);
+      }
     };
   }, []);
 

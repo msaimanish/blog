@@ -2000,3 +2000,18 @@ html[data-theme='dark'] .chat-markdown pre {
     letter-spacing: -0.025em;
   }
 }
+
+/* Mobile Safari: avoid auto-zooming the page when the chat input is tapped.
+   The keyboard will open only after the visitor taps this field. */
+@media (max-width: 700px) {
+  .chat-input input {
+    font-size: 16px !important;
+  }
+}
+
+/* Keep only the drifting particle layer on touch-first devices. */
+@media (pointer: coarse) {
+  .effects-canvas--cursor {
+    display: none !important;
+  }
+}

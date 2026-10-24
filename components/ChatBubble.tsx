@@ -26,12 +26,10 @@ export default function ChatBubble() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [error, setError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (!open) return;
-    inputRef.current?.focus();
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [open, messages, busy]);
 
@@ -106,7 +104,6 @@ export default function ChatBubble() {
     setError('');
     setInput('');
     setMessages([INITIAL_MESSAGE]);
-    inputRef.current?.focus();
   }
 
   return (
@@ -225,7 +222,6 @@ export default function ChatBubble() {
 
           <form className="chat-input" onSubmit={(event) => { event.preventDefault(); void send(); }}>
             <input
-              ref={inputRef}
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder="Ask a question…"
