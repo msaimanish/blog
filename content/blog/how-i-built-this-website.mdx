@@ -1,0 +1,61 @@
+---
+title: "How I Built My Portfolio Website"
+date: "2026-10-24"
+summary: "How I built my portfolio with Next.js, custom canvas effects, interactive typography, a theme toggle, and a lightweight Markdown blog."
+tags:
+  - Next.js
+  - React
+  - TypeScript
+  - CSS
+draft: false
+---
+
+# Building a portfolio that feels like my own
+
+I wanted my portfolio to be more than a list of projects. I wanted it to reflect how I approach software engineering: build something useful, experiment with the details, and keep refining it until the pieces work together.
+
+The website brings my projects, experience, technical interests, and contact information into one place. I also wanted room to write about the decisions behind the things I build.
+
+## The technology stack
+
+The site uses **Next.js, React, and TypeScript**. Next.js provides the routing for the homepage, contact page, blog listing, and individual articles. React components keep interactive elements separate, while custom CSS gives me control over the layout, typography, responsiveness, and themes.
+
+Framer Motion powers the animated navigation. Instead of adding a large UI library for every visual detail, I built most of the interface using reusable components and CSS.
+
+## A minimalist design
+
+I experimented with different visual directions before settling on a monochrome palette. Black and white, restrained borders, generous spacing, and subtle surface effects keep the content readable without making the page feel static.
+
+The goal was to let the projects and writing take centre stage. I wanted the interface to have personality, but not at the expense of clarity.
+
+## The animated background
+
+One of the more interesting parts of the site is its custom canvas background. A React component uses the Canvas 2D API to draw particles that drift across the screen. Moving the pointer influences nearby particles, making the background feel responsive.
+
+A second canvas draws a short-lived trail behind the pointer. Combined with CSS blending, this creates the slicing-like cursor effect. I also keep the particles away from the main hero text so they do not interfere with readability.
+
+## Small interactions
+
+The typewriter effect reveals my name one character at a time. The navigation changes position as the page scrolls, and the tagline uses a staggered, letter-by-letter animation when hovered.
+
+A theme toggle switches between light and dark appearances and saves the selection in local storage. I use reduced-motion preferences where appropriate so animations do not have to run for everyone.
+
+These details are small, but together they make the website feel more personal. They also need to work on mobile screens and remain usable without relying on animation.
+
+## A simple blog, powered by files
+
+I wanted publishing an article to be straightforward. Blog posts live as Markdown-style `.mdx` files in `content/blog/`, with frontmatter for the title, date, summary, tags, and draft status.
+
+The site reads this metadata, calculates an estimated reading time, and displays published articles on the blog page. React Markdown renders each article. There is no separate database or CMS to manage: writing a post and committing it to Git is enough.
+
+## What I learned
+
+Building this site taught me that iteration is useful, but it can also create clutter. As I refined the design, additional CSS overrides accumulated. That made it harder to understand which rule controlled a component and sometimes caused one visual fix to break another.
+
+Cleaning up the styles and keeping component rules together is part of building the site, not just housekeeping. The same applies to accessibility, responsive layouts, metadata, and testing.
+
+I want this website to keep evolving alongside my projects. It is both a place to show what I have built and a place to document what I learn while building the next thing.
+
+---
+
+The website's source code is available on [GitHub](https://github.com/msaimanish/blog).
