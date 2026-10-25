@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const links = [
   { href: '/', label: 'About' },
@@ -12,11 +12,16 @@ const links = [
 ];
 
 const DOCK_SCROLL_THRESHOLD = 90;
+// The vertical dock sits in the left margin, so it only appears when the page is wide enough
+// to leave that margin free (content column is 1120px plus the dock). Below this it stays a top pill.
+const DOCK_MIN_WIDTH = 1320;
 
 export default function NavSlider() {
   const path = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [isDocked, setIsDocked] = useState(false);
+  const [squish, setSquish] = useState(false);
+  const previous = useRef<string | null>(null);
 
   const active = path.startsWith('/blog')
     ? '/blog'
@@ -30,7 +35,7 @@ export default function NavSlider() {
     const updateDockState = () => {
       if (frame) window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
-        setIsDocked(window.innerWidth > 700 && window.scrollY > DOCK_SCROLL_THRESHOLD);
+        setIsDocked(window.innerWidth >= DOCK_MIN_WIDTH && window.scrollY > DOCK_SCROLL_THRESHOLD);
         frame = 0;
       });
     };
@@ -46,6 +51,19 @@ export default function NavSlider() {
     };
   }, []);
 
+  // When the active page changes, the glass pill squashes and settles as it arrives.
+  useEffect(() => {
+    if (previous.current === null) {
+      previous.current = active;
+      return;
+    }
+    if (previous.current === active || prefersReducedMotion) return;
+    previous.current = active;
+    setSquish(true);
+    const timer = window.setTimeout(() => setSquish(false), 900);
+    return () => window.clearTimeout(timer);
+  }, [active, prefersReducedMotion]);
+
   const spring = prefersReducedMotion
     ? { duration: 0 }
     : { type: 'spring' as const, stiffness: 360, damping: 32, mass: 0.82 };
@@ -59,7 +77,7 @@ export default function NavSlider() {
     >
       <motion.nav
         layout
-        className={`nav-glass${isDocked ? ' nav-glass--docked' : ''}`}
+        className={`nav-glass${isDocked ? ' nav-glass--docked' : ''}${squish ? ' nav-glass--squish' : ''}`}
         aria-label="Main navigation"
         transition={spring}
       >

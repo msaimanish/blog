@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 
 type Particle = {
@@ -22,7 +23,212 @@ const TRAIL_LIFETIME_MS = 110;
 const TRAIL_MAX_POINTS = 18;
 const POINTER_RADIUS = 190;
 
+// ---------------------------------------------------------------------------
+// Liquid-glass interaction layer (styles live at the end of app/globals.css)
+// ---------------------------------------------------------------------------
+
+/**
+ * Shared liquid-glass behaviour, wired up once for the whole site with event delegation:
+ *  - a specular highlight that follows the pointer across any glass surface,
+ *  - a gentle lift on cards (no rotation: tilting a card softens its text),
+ *  - a magnetic pull on buttons,
+ *  - a ripple where you press,
+ *  - cards that condense into view as you scroll to them.
+ * Everything is driven by CSS variables (see app/liquid.css). Nothing renders.
+ */
+const SURFACE = '.glass, .nav-glass, .theme-toggle, .skill-chip, .timeline article, .contact-item';
+const MAGNET = '.social-button, .email-cta, .theme-toggle, .chat-launch, .nav-resume';
+const REVEAL = '.project-card, .skill-card, .education-card, .post-card, .empty-post, .contact-note, .email-cta';
+
+const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
+
+function useGlassEffects() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    root.classList.add('lg-ready');
+    if (reduced) return () => root.classList.remove('lg-ready');
+
+    let px = -1;
+    let py = -1;
+    let raf = 0;
+    let hot = new Set<HTMLElement>();
+    let pulled: HTMLElement | null = null;
+
+    // Buttons lean toward the pointer, eased so they never snap.
+    const pulls = new Map<HTMLElement, { x: number; y: number; tx: number; ty: number }>();
+    let pullRaf = 0;
+    const pullTick = () => {
+      pullRaf = 0;
+      let moving = false;
+      pulls.forEach((p, el) => {
+        p.x += (p.tx - p.x) * 0.2;
+        p.y += (p.ty - p.y) * 0.2;
+        const settled = Math.abs(p.x - p.tx) < 0.02 && Math.abs(p.y - p.ty) < 0.02;
+        if (settled && p.tx === 0 && p.ty === 0) {
+          el.style.removeProperty('--lg-mgx');
+          el.style.removeProperty('--lg-mgy');
+          pulls.delete(el);
+          return;
+        }
+        if (!settled) moving = true;
+        el.style.setProperty('--lg-mgx', `${p.x.toFixed(2)}px`);
+        el.style.setProperty('--lg-mgy', `${p.y.toFixed(2)}px`);
+      });
+      if (moving) pullRaf = requestAnimationFrame(pullTick);
+    };
+    const setPull = (el: HTMLElement, tx: number, ty: number) => {
+      const p = pulls.get(el) ?? { x: 0, y: 0, tx: 0, ty: 0 };
+      p.tx = tx;
+      p.ty = ty;
+      pulls.set(el, p);
+      if (!pullRaf) pullRaf = requestAnimationFrame(pullTick);
+    };
+
+    const update = () => {
+      raf = 0;
+      const under = px >= 0 ? document.elementFromPoint(px, py) : null;
+
+      // Every glass surface the pointer is over (a chip inside a card lights both).
+      const next = new Set<HTMLElement>();
+      for (let el = under as HTMLElement | null; el && el !== document.body; el = el.parentElement) {
+        if (el.matches(SURFACE)) next.add(el);
+      }
+      hot.forEach((el) => {
+        if (!next.has(el)) el.removeAttribute('data-lg-hot');
+      });
+      next.forEach((el) => {
+        if (!hot.has(el)) el.setAttribute('data-lg-hot', '');
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--lg-mx', `${(px - r.left).toFixed(0)}px`);
+        el.style.setProperty('--lg-my', `${(py - r.top).toFixed(0)}px`);
+      });
+      hot = next;
+
+      const pull = under?.closest<HTMLElement>(MAGNET) ?? null;
+      if (pull !== pulled) {
+        if (pulled) setPull(pulled, 0, 0);
+        pulled = pull;
+      }
+      if (pull) {
+        const r = pull.getBoundingClientRect();
+        setPull(
+          pull,
+          clamp((px - (r.left + r.width / 2)) * 0.16, -5, 5),
+          clamp((py - (r.top + r.height / 2)) * 0.2, -4, 4),
+        );
+      }
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      px = e.clientX;
+      py = e.clientY;
+      schedule();
+    };
+    const onOut = (e: MouseEvent) => {
+      if (e.relatedTarget) return;
+      px = py = -1;
+      schedule();
+    };
+
+    const onDown = (e: PointerEvent) => {
+      const el = (e.target as Element | null)?.closest<HTMLElement>(SURFACE);
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--lg-rx', `${(e.clientX - r.left).toFixed(0)}px`);
+      el.style.setProperty('--lg-ry', `${(e.clientY - r.top).toFixed(0)}px`);
+      el.classList.remove('lg-ripple');
+      void el.offsetWidth; // restart the animation if it is already running
+      el.classList.add('lg-ripple');
+      window.setTimeout(() => el.classList.remove('lg-ripple'), 900);
+    };
+
+    if (fine) {
+      window.addEventListener('pointermove', onMove, { passive: true });
+      window.addEventListener('scroll', schedule, { passive: true });
+      document.addEventListener('mouseout', onOut);
+    }
+    window.addEventListener('pointerdown', onDown, { passive: true });
+
+    // Cards below the fold condense into view the first time they are reached.
+    const items = Array.from(document.querySelectorAll<HTMLElement>(REVEAL)).filter(
+      (el) => el.getBoundingClientRect().top > window.innerHeight * 0.96,
+    );
+    items.forEach((el) => el.setAttribute('data-lg-in', 'pending'));
+    const io = new IntersectionObserver(
+      (entries) => {
+        let n = 0;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target as HTMLElement;
+          el.style.setProperty('--lg-d', `${n * 80}ms`);
+          el.setAttribute('data-lg-in', 'done');
+          window.setTimeout(() => el.style.removeProperty('--lg-d'), 1600); // the stagger delay must not linger on hover
+          io.unobserve(el);
+          n += 1;
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+    );
+    items.forEach((el) => io.observe(el));
+
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('scroll', schedule);
+      document.removeEventListener('mouseout', onOut);
+      window.removeEventListener('pointerdown', onDown);
+      hot.forEach((el) => el.removeAttribute('data-lg-hot'));
+      cancelAnimationFrame(pullRaf);
+      pulls.forEach((_, el) => {
+        el.style.removeProperty('--lg-mgx');
+        el.style.removeProperty('--lg-mgy');
+      });
+      items.forEach((el) => el.removeAttribute('data-lg-in'));
+      root.classList.remove('lg-ready');
+    };
+  }, []);
+}
+
+/** A thin bar at the top of blog posts that fills as you read. */
+function useReadingProgress() {
+  const pathname = usePathname();
+  useEffect(() => {
+    if (!pathname.startsWith('/blog/') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const bar = document.createElement('div');
+    bar.className = 'lg-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.setProperty('--lg-progress', String(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      bar.remove();
+    };
+  }, [pathname]);
+}
+
 export default function EffectsCanvas() {
+  useGlassEffects();
+  useReadingProgress();
   const particlesCanvasRef = useRef<HTMLCanvasElement>(null);
   const cursorCanvasRef = useRef<HTMLCanvasElement>(null);
 

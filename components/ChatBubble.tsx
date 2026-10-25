@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { AnimatePresence, motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -116,15 +117,30 @@ export default function ChatBubble() {
         aria-controls="portfolio-chat-panel"
         type="button"
       >
-        {open ? (
-          '×'
-        ) : (
-          <MessageCircle size={22} strokeWidth={1.7} aria-hidden="true" />
-        )}
+        <motion.span
+          key={open ? 'close' : 'open'}
+          className="chat-launch-icon"
+          initial={{ rotate: open ? -80 : 80, scale: 0.4, opacity: 0 }}
+          animate={{ rotate: 0, scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 420, damping: 22 }}
+        >
+          {open ? '×' : <MessageCircle size={22} strokeWidth={1.7} aria-hidden="true" />}
+        </motion.span>
       </button>
 
+      <AnimatePresence>
       {open && (
-        <section id="portfolio-chat-panel" className="chat-panel glass" aria-label="Ask about Manish">
+        <motion.section
+          key="panel"
+          id="portfolio-chat-panel"
+          className="chat-panel glass"
+          aria-label="Ask about Manish"
+          initial={{ opacity: 0, scale: 0.78, y: 28 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.88, y: 18 }}
+          transition={{ type: 'spring', stiffness: 360, damping: 27, mass: 0.9 }}
+          style={{ transformOrigin: 'bottom right' }}
+        >
           <div className="chat-head">
             <div className="chat-avatar" aria-hidden="true">M.</div>
             <div className="chat-heading-copy">
@@ -237,8 +253,9 @@ export default function ChatBubble() {
             )}
           </form>
           <p className="chat-disclaimer">Answers are based on Manish's portfolio. <a href="mailto:msaimanishreddy123@gmail.com">Contact him directly</a>.</p>
-        </section>
+        </motion.section>
       )}
+      </AnimatePresence>
     </>
   );
 }
