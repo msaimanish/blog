@@ -65,7 +65,7 @@ const socialLinks = [
   { label: 'GitHub', href: 'https://github.com/msaimanish' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/msaimanish/' },
   { label: 'X', href: 'https://x.com/msaimanish' },
-  { label: 'Bluesky', href: 'https://bsky.app/profile/msaimanish.bsky.social' },
+  { label: 'Bluesky', href: 'https://bsky.app/profile/msaimanish.tech' },
   { label: 'DevPost', href: 'https://devpost.com/msaimanish' },
 ];
 
