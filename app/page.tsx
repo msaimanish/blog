@@ -19,7 +19,7 @@ const projects = [
     desc: 'Transforms Twitch raids into collaborative, AI-powered quests. Turns incoming viewers into a shared party through raid-aware challenges, helping streamers engage new audiences and make the first 60 seconds of a raid more interactive.',
     stack: 'Python · Twitch API · EventSub · LLM APIs · Agentic AI',
     href: 'https://github.com/msaimanish/RaidRelay',
-    featured: true,
+    featured: false,
   },
   {
     name: 'SIFSentinel',
