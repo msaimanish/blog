@@ -14,6 +14,14 @@ const projects = [
     featured: true,
   },
   {
+    name: 'Raid Relay',
+    type: 'Agentic AI · Twitch · Interactive experiences',
+    desc: 'Transforms Twitch raids into collaborative, AI-powered quests. Turns incoming viewers into a shared party through raid-aware challenges, helping streamers engage new audiences and make the first 60 seconds of a raid more interactive.',
+    stack: 'Python · Twitch API · EventSub · LLM APIs · Agentic AI',
+    href: 'https://github.com/msaimanish/RaidRelay',
+    featured: true,
+  },
+  {
     name: 'SIFSentinel',
     type: 'AI · NLP · Safety intelligence',
     desc: 'Classifies incident, near-miss, and unsafe-condition reports for potential serious-injury and fatality precursors, maps safety rules, prioritizes risk, and retrieves similar historical reports.',
