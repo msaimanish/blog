@@ -1,0 +1,102 @@
+---
+title: "My First Open-Source Contribution to Matplotlib"
+date: "2026-11-02"
+summary: "The story behind my first merged contribution to Matplotlib: fixing a misleading version-warning banner on development documentation pages."
+tags:
+  - Open Source
+  - Matplotlib
+  - Python
+  - Sphinx
+  - Documentation
+draft: false
+---
+
+# My first contribution to Matplotlib
+
+Open-source contributions are a great way to learn how real software projects are maintained. You get to work with an existing codebase, understand decisions made by other developers, and solve problems that affect people beyond your own projects.
+
+Recently, I had my first contribution merged into **Matplotlib**, one of the most widely used Python libraries for data visualization.
+
+It was a small documentation fix, but it gave me a valuable look at how a mature open-source project handles issues, reviews, and changes.
+
+## Finding the problem
+
+The issue was with the version-warning banner displayed on Matplotlib's development documentation pages.
+
+The banner encourages readers to switch to the stable documentation. That makes sense on most development pages, but not in this particular case: maintenance documentation under `/devel/` is served from the development version. Following the stable-version link could send readers straight back to the same development page.
+
+The warning was therefore misleading rather than helpful.
+
+The problem was tracked in [Matplotlib issue #32542](https://github.com/matplotlib/matplotlib/issues/32542).
+
+## Understanding the documentation setup
+
+Before changing anything, I needed to understand how the documentation site was built and how its theme controlled the banner.
+
+Matplotlib uses Sphinx for its documentation. Sphinx exposes events that extensions can connect to, including `html-page-context`, which runs while the HTML context for a page is being prepared.
+
+The theme's warning-banner setting is available through that page context. This made it possible to change the setting only for the affected documentation pages, instead of disabling the banner across the entire site.
+
+## The fix
+
+I added a callback named `disable_warning_banner_for_devel` in `doc/conf.py`.
+
+The callback checks the current page name. If it starts with `devel/`, it sets `theme_show_version_warning_banner` to `False` in the page context.
+
+```python
+def disable_warning_banner_for_devel(app, pagename, templatename, context, doctree):
+    """Hide the version warning on pages that redirect to devdocs.
+
+    The stable-version link on these pages leads back to the same development
+    page, so the warning is misleading.
+    """
+    if pagename.startswith('devel/'):
+        context['theme_show_version_warning_banner'] = False
+```
+
+I then connected the callback to Sphinx's `html-page-context` event:
+
+```python
+app.connect('html-page-context', disable_warning_banner_for_devel, priority=400)
+```
+
+This keeps the change scoped to development documentation pages. Other pages retain the normal version-warning behaviour.
+
+## Testing the change
+
+A documentation change still needs to be tested. I built the documentation using:
+
+```bash
+make html-noplot
+```
+
+I also inspected the generated HTML to check that the banner was hidden on the intended `/devel/` pages and that the change did not unnecessarily affect other pages.
+
+This was a useful reminder that even a small configuration change can have a site-wide impact if its scope is not carefully controlled.
+
+## The review and merge
+
+I opened [PR #32543](https://github.com/matplotlib/matplotlib/pull/32543), titled **"Hide version warning banner on /devel/ pages."**
+
+The pull request changed one file, `doc/conf.py`, with 11 lines added and no deletions. It was reviewed and approved by Matplotlib maintainers, then merged on **November 1, 2026**.
+
+A detail I appreciated was the review process itself. The feedback confirmed that the solution was reasonable, while the discussion reinforced how important it is to explain the problem clearly and keep a fix narrowly scoped.
+
+## What I learned
+
+This contribution was a small change in terms of code, but a meaningful first step for me in open source.
+
+A few things stood out:
+
+- **Understand the system before changing it.** Knowing how Sphinx events and the theme context fit together helped me choose a targeted solution.
+- **Keep fixes scoped.** Disabling the banner only for `devel/` pages avoids changing behaviour elsewhere.
+- **Test documentation too.** Documentation configuration is code, and its output should be checked just like an application.
+- **Treat review as part of development.** A pull request is not just a place to submit code; it is an opportunity to explain, validate, and improve a solution with maintainers.
+
+I'm glad my first Matplotlib contribution is merged, and I look forward to contributing more to projects whose tools I use and learn from.
+
+---
+
+**Contribution:** [matplotlib/matplotlib#32543](https://github.com/matplotlib/matplotlib/pull/32543)  
+**Related issue:** [matplotlib/matplotlib#32542](https://github.com/matplotlib/matplotlib/issues/32542)  
+**File changed:** `doc/conf.py`

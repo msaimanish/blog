@@ -1,0 +1,111 @@
+---
+title: "Raid Relay: Turning Twitch Raids into Shared Quests"
+date: "2026-11-02"
+summary: "The idea behind Raid Relay, an AI-powered Twitch experience that turns incoming raids into collaborative quests and gives viewers a reason to participate from the first minute."
+tags:
+  - Twitch
+  - Agentic AI
+  - OpenAI Codex
+  - Hackathon
+  - Python
+draft: false
+---
+
+# Making the first 60 seconds of a raid matter
+
+A Twitch raid can bring a whole new group of viewers into a stream in seconds. But once they arrive, there is a small problem: they have landed in a chat where they may not know the streamer, the community, or what is happening.
+
+The notification says that a raid happened. It does not necessarily give the incoming viewers a reason to stay or a way to become part of the conversation.
+
+That became the starting point for **Raid Relay**, my concept for the Codex x TwitchCon Hackathon.
+
+Instead of treating a raid as a handoff of viewers, I wanted to turn it into a handoff of a story.
+
+## The idea: a quest that travels between channels
+
+Raid Relay turns incoming viewers into a temporary party. When a raid arrives, the new chat is introduced to a shared quest. Viewers can make decisions together, influence what happens next, and leave the next channel with a story that has already begun.
+
+The central idea is simple:
+
+**A raid should give the incoming community something to do together, not just somewhere new to watch.**
+
+The experience is designed around the first 60 seconds after a raid. The goal is to make that moment interactive quickly, without asking viewers to learn a complicated game or leave the stream.
+
+## How the relay works
+
+The experience follows a repeating loop:
+
+1. **A raid arrives.** Raid Relay uses the raid context to begin a new chapter and welcome the incoming viewers.
+2. **The party gets a quest.** The chat receives a short objective and a clear set of choices.
+3. **Viewers decide together.** Chat participation determines which action the party takes.
+4. **The story changes.** The decision updates the shared quest state, shaping the next situation rather than ending as a one-off poll.
+5. **The relay continues.** When the streamer raids another channel, the next community can inherit the context and continue the experience.
+
+This makes the raid itself part of the game loop. Each channel becomes another stop in a story that different communities help shape.
+
+## Decisions should have consequences
+
+One design detail I wanted to get right was persistence.
+
+Choices such as **Claim**, **Protect**, and **Sneak** should not behave like disconnected buttons. They should update the state of the quest so that later decisions have context.
+
+For example, consider two sequences:
+
+- **Claim → Sneak:** the party first chooses to claim something, then attempts a stealthy move. The later action should account for what the party has already taken responsibility for.
+- **Protect → Sneak:** the party first chooses to protect something, then attempts the same stealthy move. The context is different, so the consequences should be different too.
+
+The important part is not just the wording of the next prompt. It is that the system remembers what happened earlier and uses that information to shape what happens next.
+
+That creates room for strategy, replayability, and shared ownership. Viewers are not merely voting on the next line of generated text; they are influencing an evolving situation.
+
+## Where AI fits
+
+I see AI as the narrative and orchestration layer, not as a replacement for viewer decisions.
+
+The system needs to keep track of the current quest, the party's previous choices, and the context that should travel with the raid. An LLM can help turn that structured state into a quest update that is understandable and engaging for the next group of viewers.
+
+The distinction matters. If every action is generated without remembering previous decisions, the experience quickly feels random. A persistent state gives the narrative continuity and makes each choice meaningful.
+
+The intended stack brings together Python, Twitch integrations, and LLM APIs, with the AI operating around a defined game state rather than improvising the rules from scratch.
+
+## Designing around Twitch
+
+Raid Relay is meant to live inside the stream experience.
+
+The Twitch integration is central to the concept:
+
+- **Twitch API and EventSub** provide the connection to stream events such as incoming raids.
+- **Chat interactions** let viewers participate in decisions without leaving the channel.
+- **A stream overlay** can make the current quest, party state, and available choices visible to both the streamer and the audience.
+
+The design goal is to keep the interaction lightweight. A viewer should be able to understand the current objective, make a choice, and see the result without navigating to another application.
+
+## Why I chose this direction
+
+I was interested in the social behaviour around raids as much as the technical integration.
+
+A raid connects two communities, but that connection is often temporary. The incoming audience may watch for a moment and then leave. Giving both communities a shared objective creates a natural opening for participation.
+
+It also gives the receiving streamer something to react to. Instead of only welcoming a wave of viewers, they can continue a quest, respond to the party's previous decisions, and help move the story forward.
+
+That is what makes the relay mechanic important: the experience belongs to the communities taking part, not just to one channel.
+
+## What I took away from the design
+
+Working through Raid Relay pushed me to think beyond the AI feature itself.
+
+- **Start with a real interaction problem.** The first minute after a raid is a specific moment with a specific audience need.
+- **Make participation immediate.** Viewers should be able to join without a long setup or explanation.
+- **Give state a purpose.** Persistent decisions are what turn a sequence of chat prompts into a coherent experience.
+- **Keep AI inside clear boundaries.** The model can narrate and adapt the quest, while the game state and rules preserve continuity.
+- **Design for the streamer and the viewers.** The experience has to be understandable and entertaining on stream, not just technically interesting behind the scenes.
+
+Raid Relay began with a small question: what if a raid carried more than viewers from one channel to another?
+
+The idea grew into a shared quest where each community leaves its mark and the next one gets to continue the story. That is the experience I wanted to explore for the Codex x TwitchCon Hackathon.
+
+---
+
+**Project:** Raid Relay  
+**Hackathon:** [Codex x TwitchCon Hackathon](https://twitchcon-codex.devpost.com/)  
+**Source code:** [GitHub repository](https://github.com/msaimanish/RaidRelay)

@@ -17,7 +17,7 @@ const INITIAL_MESSAGE: Message = {
 const SUGGESTIONS = [
   'What has Manish built?',
   'Which hackathons has he won?',
-  'What is NexCord?',
+  'What is his latest project?',
 ];
 
 export default function ChatBubble() {

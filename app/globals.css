@@ -2274,3 +2274,60 @@ body:has(.article-page) .effects-canvas--particles { opacity: 0.28; }
 .nav-glass::after {
   display: none;
 }
+
+.opensource-list {
+  border-top: 1px solid var(--border);
+}
+
+.opensource-entry {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.opensource-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.55;
+}
+
+.opensource-content {
+  max-width: 680px;
+}
+
+.opensource-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.opensource-title h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.opensource-status {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.opensource-content p {
+  line-height: 1.7;
+  opacity: 0.75;
+  margin: 1rem 0;
+}
+
+@media (max-width: 600px) {
+  .opensource-entry {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

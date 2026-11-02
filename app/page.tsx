@@ -153,6 +153,52 @@ export default function Home() {
           </article>
         </div>
       </section>
+      <section className="section opensource-section" id="opensource">
+        <div className="section-kicker">04 / OPEN SOURCE</div>
+
+        <div className="section-heading">
+          <h2>Building in the <em>open.</em></h2>
+          <p>Contributing to the tools developers rely on.</p>
+        </div>
+
+        <div className="opensource-list">
+          <article className="opensource-entry">
+            <div className="opensource-meta">
+              <span>01</span>
+              <span>OCT — NOV 2026</span>
+            </div>
+
+            <div className="opensource-content">
+              <div className="opensource-title">
+                <h3>Matplotlib</h3>
+                <span className="opensource-status">MERGED</span>
+              </div>
+
+              <p>
+                Fixed a misleading version-warning banner on development
+                documentation pages by implementing a page-specific Sphinx
+                callback.
+              </p>
+
+              <div className="tech-line">
+                Python · Sphinx · Documentation
+              </div>
+
+              <a
+                href="https://github.com/matplotlib/matplotlib/pull/32543"
+                target="_blank"
+                rel="noreferrer"
+                className="arrow-link"
+              >
+                View pull request
+                <span>
+                  <ArrowUpRight size={14} strokeWidth={1.8} />
+                </span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
 
       <section className="section toolkit-section" id="toolkit">
         <div className="section-kicker">04 / TOOLKIT</div>

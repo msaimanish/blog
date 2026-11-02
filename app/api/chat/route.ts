@@ -51,8 +51,6 @@ execution verification, auditability, and recovery from failures.
 
 Technology: Python, LangGraph, MCP/FastMCP, PostgreSQL, and pgvector.
 
-The project is under development.
-
 3. ClassSense AI
 A facial-recognition-based classroom attendance and analytics system.
 It recognizes registered students, automates attendance logging,
@@ -94,6 +92,15 @@ identifies and localizes weeds in crop images.
 It integrates a Streamlit interface with a ConvNeXt-based detection
 pipeline that classifies plants and returns bounding boxes for weeds.
 The team used a transfer-learned model trained on Google Cloud TPUs.
+
+7. Raid Relay
+A Twitch raid experience concept developed for the Codex x TwitchCon
+Hackathon. Raid Relay focuses on fixing the first 60 seconds after a
+raid: incoming viewers often arrive in an unfamiliar channel without
+context, so the experience turns that arrival into the beginning of
+a collaborative, cross-channel quest.
+
+this is the latest project.
 
 EXPERIENCE
 
